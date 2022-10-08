@@ -1,0 +1,24 @@
+﻿  bild.cpp
+  abilities.cpp
+C:\Users\spyro\Desktop\skolgrejs\Project1-spel\Project1-spel\abilities.cpp(16,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  curtain.cpp
+  Project1-spel.cpp
+C:\Users\spyro\Desktop\skolgrejs\Project1-spel\Project1-spel\Project1-spel.cpp(243,90): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\spyro\Desktop\skolgrejs\Project1-spel\Project1-spel\Project1-spel.cpp(277,90): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\spyro\Desktop\skolgrejs\Project1-spel\Project1-spel\Project1-spel.cpp(303,93): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\spyro\Desktop\skolgrejs\Project1-spel\Project1-spel\Project1-spel.cpp(318,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\spyro\Desktop\skolgrejs\Project1-spel\Project1-spel\Project1-spel.cpp(354,25): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\spyro\Desktop\skolgrejs\Project1-spel\Project1-spel\Project1-spel.cpp(532,54): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\spyro\Desktop\skolgrejs\Project1-spel\Project1-spel\Project1-spel.cpp(540,53): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\spyro\Desktop\skolgrejs\Project1-spel\Project1-spel\Project1-spel.cpp(548,53): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\spyro\Desktop\skolgrejs\Project1-spel\Project1-spel\Project1-spel.cpp(556,53): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\spyro\Desktop\skolgrejs\Project1-spel\Project1-spel\Project1-spel.cpp(564,53): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+  clicker.cpp
+  sand.cpp
+  spelare.cpp
+  stats.cpp
+  Generating Code...
+C:\Users\spyro\Desktop\skolgrejs\Project1-spel\Project1-spel\abilities.cpp(41): warning C4715: 'ability::get_a_stat': not all control paths return a value
+sand.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: void __cdecl Tuff::App::run(void)" (__imp_?run@App@Tuff@@QEAAXXZ) referenced in function main
+sand.obj : error LNK2019: unresolved external symbol "class Tuff::App * __cdecl Tuff::AppCreate(void)" (?AppCreate@Tuff@@YAPEAVApp@1@XZ) referenced in function main
+C:\Users\spyro\Desktop\skolgrejs\Project1-spel\x64\Debug\Project1-spel.exe : fatal error LNK1120: 2 unresolved externals
