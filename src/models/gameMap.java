@@ -1,5 +1,6 @@
 package models;
 
+import java.awt.*;
 import java.util.ArrayDeque;
 import java.util.Random;
 
@@ -16,7 +17,8 @@ public class gameMap {
 
     public gameMap() {
         Random random = new Random();
-        this.ending = new Coordinate(random.nextInt(50)+4, random.nextInt(50)+4, " ");
+        this.ending = new Coordinate(random.nextInt(50)+4, random.nextInt(50)+4, "*");
+        this.ending.setColor(Color.YELLOW);
         this.dropSpots = createPOIs();
     }
 

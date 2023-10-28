@@ -44,26 +44,16 @@ public class GUI extends JFrame {
 
         mainContent.setLayout(new GridLayout(60,60));
 
-        int iteratorCount= 0;
-        byte colorChoice = 0;
-        Color[] colors = {Color.PINK, Color.CYAN, Color.GREEN, Color.ORANGE, Color.MAGENTA, Color.WHITE,
-        Color.YELLOW, Color.GRAY}; // TODO lägg till fler färger
-
         for(Coordinate c: map) {
             JLabel t = new JLabel();
-            if(Objects.equals(c.t(), "O")) {
-                t.setForeground(colors[colorChoice]);
-
-                iteratorCount++;
-                if(iteratorCount%3==0) {
-                    colorChoice++;
-                }
-            } else if(Objects.equals(c.t(), "#")) {
+            if(Objects.equals(c.getT(), "#")) {
                 t.setForeground(Color.BLUE);
-            } else {
+            } else if(Objects.equals(c.getT(), "-")){
                 t.setForeground(Color.DARK_GRAY);
+            } else {
+                t.setForeground(c.getColor());
             }
-            t.setText(String.valueOf(c.t()));
+            t.setText(String.valueOf(c.getT()));
             mainContent.add(t);
         }
         this.add(mainContent);

@@ -4,6 +4,7 @@ import models.Coordinate;
 import models.teams.team;
 import models.teams.teamMember;
 
+import java.awt.*;
 import java.util.ArrayDeque;
 import java.util.Random;
 
@@ -14,20 +15,26 @@ public class teamFactory {
     public ArrayDeque<team> createTeams(int amount, ArrayDeque<Coordinate> dropSpots) {
         ArrayDeque<team> teams = new ArrayDeque<>();
 
+        Color[] colors = {Color.PINK, Color.CYAN, Color.GREEN, Color.ORANGE, Color.MAGENTA, Color.WHITE,
+                Color.YELLOW, Color.GRAY}; // TODO lägg till fler färger
+
         for(int i=0;i<amount;i++) {
             Coordinate temp = dropSpots.pop();
-            temp = new Coordinate(temp.x(), temp.y(), Integer.toString(i));
-            teams.add(new team(i+1, createMembers(temp), temp));
+            temp = new Coordinate(temp.getX(), temp.getY(), Integer.toString(i));
+            teams.add(new team(i+1, createMembers(temp, colors[i]), temp));
         }
 
         return teams;
     }
 
-    private ArrayDeque<teamMember> createMembers(Coordinate dropSpot) {
+    private ArrayDeque<teamMember> createMembers(Coordinate dropSpot, Color teamColor) {
         ArrayDeque<teamMember> members = new ArrayDeque<>();
 
         for(int i=0;i<3;i++) {
-            members.add(new teamMember(createGenes(), dropSpot));
+            Coordinate drop = new Coordinate(dropSpot.getX()+i, dropSpot.getY(), dropSpot.getT());
+            teamMember member = new teamMember(createGenes(), drop);
+            member.getPosition().setColor(teamColor);
+            members.add(member);
         }
 
         ArrayDeque<teamMember> temp = new ArrayDeque<>();

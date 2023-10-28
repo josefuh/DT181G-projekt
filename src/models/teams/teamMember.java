@@ -5,12 +5,11 @@ import support.logisticSupport;
 
 import java.util.ArrayDeque;
 import java.util.Comparator;
-import java.util.stream.Collectors;
 
 public class teamMember {
     private final String genetics;
     private int health;
-    private Coordinate position;
+    private final Coordinate position;
     private final ArrayDeque<teamMember> teamMates;
     private boolean isFighting;
 
@@ -25,21 +24,33 @@ public class teamMember {
     public Coordinate getPosition() {
         return position;
     }
-    private void moveMember(Coordinate direction) {
+    private synchronized void moveMember(Coordinate direction) {
         int x, y;
-        if(position.x()<direction.x()) {
-            x = position.x() +1;
+        if(position.getX()<direction.getX()) {
+            x = position.getX() + 1;
         } else {
-            x = position.x() - 1;
+            x = position.getX() - 1;
         }
 
-        if(position.y()<direction.y()) {
-            y = position.y() +1;
+        if(position.getY()<direction.getY()) {
+            y = position.getY() + 1;
         } else {
-            y = position.y() - 1;
+            y = position.getY() - 1;
         }
 
-        position = new Coordinate(x, y, "O");
+        if(y<2) {
+            y += 2;
+        } else if(y> 57) {
+            y -= 2;
+        }
+        if(x<2) {
+            x += 2;
+        } else if(x> 57) {
+            x -= 2;
+        }
+
+        this.position.setX(x);
+        this.position.setY(y);
     }
 
     public void doTurn(Coordinate ending, ArrayDeque<team> teams) {
@@ -52,68 +63,69 @@ public class teamMember {
             iteratorCount++;
         }
 
-        iteratorCount = 0;
-        for(byte bit: cell) {   // beslutar action
-            switch(iteratorCount) {
-                case(2):      // zon-prio, högre än fem flyttar laget mot slutpunkten
-                    if(!isFighting) {
-                        if (bit > 5) {
-                            moveMember(ending);
-                            break;
-                        } else {
-                            moveMember(new Coordinate((int) (Math.random() * 60),
-                                    (int) (Math.random() * 60), "O"));
-                        }
-                    }
-                    break;
-                case(3):    // 3. fight-willingness
-                    if(!isFighting || cell[8] == 1) {
-                        if (bit > 5) {
-                            moveMember(getClosestEnemy(teams));
-                            break;
-                        } else {
-                            moveMember(new Coordinate((int) (Math.random() * 60),
-                                    (int) (Math.random() * 60), "O"));
-                        }
-                    }
-                    break;
-                case(4):    // 4. staying near teammates
-                    if(bit>5) {
-                        moveMember(teamMates.getFirst().getPosition());
-                        break;
-                    } else {
-                        moveMember(new Coordinate((int)(Math.random()*60),
-                                (int)(Math.random()*60), "O"));
-                    }
-                    break;
-                case(5):    // 5. ability-use
-                    break;
-                case(6):    // 6. avoid abilities
-                    break;
-                case(7):    // 7. distance to shoot, 8. movement while shooting
-                    Coordinate closest = getClosestEnemy(teams);
-                    if((position.x() <= closest.x()+cell[7] || position.x() >= closest.x()-cell[7]) ||
-                            (position.y() <= closest.y()+cell[7] || position.y() >= closest.y()-cell[7])) {
-                        isFighting = true;
-                    }
-                    break;
-            }
-            iteratorCount++;
+        iteratorCount = (byte)(Math.random()*3);
+        byte bit = cell[iteratorCount];
+
+        Coordinate closest = getClosestEnemy(teams);
+        if((position.getX() <= closest.getX()+cell[7]+3 || position.getX() >= closest.getX()-cell[7]+3) ||
+                (position.getY() <= closest.getY()+cell[7]+3 || position.getY() >= closest.getY()-cell[7]+3)) {
+            isFighting = true;
         }
+
+        switch(iteratorCount) {
+            case(0):      // zon-prio, högre än fem flyttar laget mot slutpunkten
+                if(!isFighting) {
+                    if (bit > 2) {
+                        moveMember(ending);
+                    } else {
+                        moveMember(new Coordinate((int) (Math.random() * 60),
+                                (int) (Math.random() * 60), "O"));
+                    }
+                }
+                break;
+            case(1):    // 3. fight-willingness
+                if(!isFighting || cell[8] == 1) {
+                    if (bit > 4) {
+                        moveMember(getClosestEnemy(teams));
+                    } else if(isFighting){
+                        runAway(getClosestEnemy(teams));
+                    }
+                }
+                break;
+            case(2):    // 4. staying near teammates
+                if(bit>7) {
+                    moveMember(teamMates.getFirst().getPosition());
+                }
+                else {
+                    runAway(teamMates.getFirst().getPosition());
+                }
+                break;
+            case(3):    // 5. ability-use, 6. avoid abilities
+                break;
+        }
+
+        //}
     }
+
+    /**
+     * used to get the coordinates of the closes enemy team
+     *
+     * @param teams other teams
+     * @return closest team's coordinates
+     */
     private Coordinate getClosestEnemy(ArrayDeque<team> teams) {
         ArrayDeque<teamMember> enemies = new ArrayDeque<>();
         for (team t : teams) {
             enemies.addAll(t.members());
         }
 
-        int[] xPositions = enemies.stream().sorted(Comparator.comparingInt(o-> o.position.x()))
-                .mapToInt(value -> value.position.x()).toArray();
-        int[] yPositions = enemies.stream().sorted(Comparator.comparingInt(o-> o.position.y()))
-                .mapToInt(value -> value.position.y()).toArray();
+        int[] xPositions = enemies.stream().sorted(Comparator.comparingInt(o-> o.position.getX()))
+                .mapToInt(value -> value.position.getX()).toArray();
+        int[] yPositions = enemies.stream().sorted(Comparator.comparingInt(o-> o.position.getY()))
+                .mapToInt(value -> value.position.getY()).toArray();
 
-        int x = logisticSupport.findClosest(xPositions, position.x());
-        int y = logisticSupport.findClosest(yPositions, position.y());
+        int x = logisticSupport.findClosest(xPositions, position.getX());
+        int y = logisticSupport.findClosest(yPositions, position.getY());
 
         return new Coordinate(x, y, "O");
     }
@@ -121,6 +133,33 @@ public class teamMember {
         return this.health;
     }
 
+    private synchronized void runAway(Coordinate enemy) {
+        int x, y;
+        if(enemy.getX()> this.position.getX()) {
+            x = this.position.getX() - 1;
+        } else {
+            x = this.position.getX() + 1;
+        }
+
+        if(enemy.getY()> this.position.getY()) {
+            y = this.position.getY() - 1;
+        } else {
+            y = this.position.getY() + 1;
+        }
+
+        if(y<2) {
+            y += 2;
+        } else if(y> 57) {
+            y -= 2;
+        }
+        if(x<2) {
+            x += 2;
+        } else if(x> 57) {
+            x -= 2;
+        }
+        this.position.setX(x);
+        this.position.setY(y);
+    }
     public void addTeamMate(ArrayDeque<teamMember> mates) {
         this.teamMates.addAll(mates);
     }
