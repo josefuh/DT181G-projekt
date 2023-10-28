@@ -1,0 +1,30 @@
+{
+  "events": [
+    {
+      "empty": "You encounter a group of streetPunks!",
+      "suspect": "You spot the lead suspect walking down a shady street!",
+      "powerUpAttack": "You decide to work out at the gym, attack up!",
+      "powerUpSpeed": "You settle down for a cup of coffee, speed up!",
+      "powerUpDefense": "You buy a new set of clothes, defense up!",
+      "powerUpHealth": "You eat healthy for once, health up!"
+    }
+  ],
+  "prompts": [
+    {
+      "crime": "\"A murder took place this morning, the killer is still on the loose.\"",
+      "filler1": "nothing unusual was reported today.",
+      "filler2": "You contemplate whether to try a different brand of cereal or not.",
+      "filler3": "A new day, the search for the killer continues"
+    }
+  ],
+  "instructions": [
+    {
+      "1": "In this game, you play as a detective responsible to find the suspected serial killer on the loose.",
+      "2": "By traveling to different cities, you can visit a randomized set of areas in order to prepare.",
+      "3": "To travel, press the name of the location, for example \"Good york\", \"coffee shop\" etc.",
+      "4": "Performing an area-event takes 1 day. The killer strikes every 5 days and moves on to a new city.",
+      "5": "Cities that have been attacked by the killer, are marked with red on the overWorld.",
+      "6": "Your job is to figure out where the killer will strike next before all cities have been attacked!"
+    }
+  ]
+}
